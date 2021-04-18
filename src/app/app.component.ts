@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GraphqlService } from './graphql.service';
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'graphql-angular';
+  rates: any[];
+  loading = true;
+  error: any;
+  data$;
+
+
+  constructor(private service: GraphqlService) {
+
+  }
+
+  ngOnInit() {
+    this.data$ = this.service.getData()
+      .pipe(map(result => result?.data?.rates))
+  }
+
+
 }
